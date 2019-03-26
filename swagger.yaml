@@ -219,7 +219,7 @@ paths:
     post:
       tags:
       - "Product"
-      summary: "uploads an image"
+      summary: "uploads an image and saves the encrypted filename along with the id"
       description: ""
       operationId: "uploadFile"
       consumes:
