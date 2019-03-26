@@ -36,9 +36,6 @@ paths:
         name: "body"
         schema:
           $ref: "#/definitions/Product"
-      
-  
-
       responses:
         200:
           description: "Successfully added"
@@ -482,7 +479,6 @@ paths:
           description: "Invalid SKU supplied"
         404:
           description: "Category not found"
-
 
 definitions:
   Category:
