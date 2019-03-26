@@ -12,7 +12,7 @@
 External Libraries used are:
 - _Cors_: To interface the swagger editor and the node app
 - _Joi_ : To validate the data
-- _Mutlr_ : To upload the files 
+- _Multer_ : To upload the files 
 All of these libraries can be installed by running the command 
 ```npm install```
 
