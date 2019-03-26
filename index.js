@@ -3,45 +3,74 @@ const joi=require("joi")
 var app=express();
 var port=3000;
 const cors = require('cors');
+// used for uploading the file to a folder
 const multer = require('multer');
 const upload = multer({
   dest: './uploads' // this saves your file into a directory called "uploads"
 });
-
+// for swagger interfacing
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.set('views', './views');
-app.set('view engine','pug');
 
 var product={
     '1':{
-        'name':'Milks',
-        'price':23,
+        'name':'Milk',
+        'price':20,
         'category':'1',
         'state':'live',
-        'mode':'both',
+        'mode':'offline',
         'size':'small',
         'colour':'white',
         'brand':'Amul',
-        'metadata':"jdvhjsgfhjhsgf"
+        'metadata':"A milk product"
     },
     '2':{
-        'name':'Milks',
+        'name':'Phone',
+        'price':10000,
+        'category':'2',
+        'state':'live',
+        'mode':'online',
+        'size':'',
+        'colour':'grey',
+        'brand':'OnePlus',
+        'metadata':"A smart phone"
+    },
+    '3':{
+        'name':'jeans',
+        'price':1000,
+        'category':'3',
+        'state':'live',
+        'mode':'both',
+        'size':'medium',
+        'colour':'black',
+        'brand':'levis',
+        'metadata':"A clothing item"
+    },
+    '4':{
+        'name':'Jam',
         'price':100,
         'category':'1',
         'state':'live',
-        'mode':'both',
+        'mode':'offline',
         'size':'small',
-        'colour':'white',
-        'brand':'Amul',
-        'metadata':"jdvhjsgfhjhsgf"
+        'colour':'',
+        'brand':'Kisaan',
+        'metadata':"Fruit Jam"
     }
 }
 var categories={
     '1':{
         'name':'Grocery',
-        'tax':0.25
+        'tax':0.10
+    },
+    '2':{
+        'name':'Electronics',
+        'tax':0.20
+    },
+    '1':{
+        'name':'Clothing',
+        'tax':0.15
     }
 }
  var files={
@@ -49,6 +78,7 @@ var categories={
     "9601528729c9723a61c2865e1d8ab640":"2"
  }
 
+// for adding a single product
 app.post('/product',(req,res)=>{
     const schema = {
         id: joi.number().required(),
@@ -95,6 +125,7 @@ app.post('/product',(req,res)=>{
     }
 });
 
+// for updating a product via json
 app.put('/product',(req,res)=>{
     const schema = {
         id: joi.number().required(),
@@ -145,6 +176,8 @@ app.put('/product',(req,res)=>{
         }        
     }
 });
+
+// for finding the products by different filters:
 
 app.get('/product/findByName',(req,res)=>{
     var name=req.query.name;
@@ -260,7 +293,7 @@ app.get('/product/findByColour',(req,res)=>{
 })
 
 
-
+// getting a single product based on the id
 app.get('/product/:id',(req,res)=>{
     var id=req.params.id;
     if(id in product){
@@ -270,6 +303,7 @@ app.get('/product/:id',(req,res)=>{
         res.status(404).send({"message": "Product Doesn't Exist"});
     }
 });
+// updating a single product via a form 
 app.put('/product/:id',(req,res)=>{
     var id=req.params.id;
     const schema = {
@@ -320,6 +354,7 @@ app.put('/product/:id',(req,res)=>{
         }        
     }
 });
+// deleting a single product
 app.delete('/product/:id',(req,res)=>{
     var id=req.params.id;
     if(id in product){
@@ -331,7 +366,7 @@ app.delete('/product/:id',(req,res)=>{
     }
 });
 
-
+// creating a new category
 app.post('/category',(req,res)=>{
     const schema = {
         id: joi.number().required(),
@@ -356,6 +391,7 @@ app.post('/category',(req,res)=>{
         }        
     }
 });
+//updating the new category and corresponding products
 app.put('/category',(req,res)=>{
     const schema = {
         id: joi.number().required(),
@@ -373,7 +409,7 @@ app.put('/category',(req,res)=>{
             if(result.value.name)
             categories[result.value.id].name=result.value.name;
             if(result.value.tax){
-                //if tax is updated update the total price of all the products
+                //if tax is updated then update the total price of all the products belonging to this category
             categories[result.value.id].tax=result.value.tax;
             for(prod in product){
                 if(product[prod]['category']==result.value.id){
@@ -389,6 +425,8 @@ app.put('/category',(req,res)=>{
         }        
     }
 });
+//displaying the category according to the given 
+//if you want to view products according to a given id 
 app.get('/category/:id',(req,res)=>{
     var id=req.params.id;
     if(id in categories){
@@ -398,6 +436,7 @@ app.get('/category/:id',(req,res)=>{
         res.status(404).send({"message": "Category Doesn't Exist"});
     }
 });
+// deleting the category and corresponding products
 app.delete('/category/:id',(req,res)=>{
     var id=req.params.id;
     if(id in categories){
@@ -417,7 +456,7 @@ app.delete('/category/:id',(req,res)=>{
 });
 
 
-
+// uploading the file to a local folder, saving the encrypted filename and the product id in 'files' dictionary
 app.post('/product/uploadImage/:id', upload.single('file-to-upload'), (req, res) => {
 
     var id=req.params.id;
