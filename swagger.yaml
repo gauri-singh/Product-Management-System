@@ -41,8 +41,10 @@ paths:
           description: "Successfully added"
           schema:
             $ref: "#/definitions/ApiResponse"
-        405:
+        400:
           description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
     put:
       tags:
       - "Product"
@@ -66,10 +68,12 @@ paths:
             $ref: "#/definitions/ApiResponse"
         400:
           description: "Invalid ID supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Product not found"
-        405:
-          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/{id}:
     get:
       tags:
@@ -90,11 +94,15 @@ paths:
         200:
           description: "successful operation"
           schema:
-            $ref: "#/definitions/ApiResponse"
+            $ref: "#/definitions/Product"
         400:
           description: "Invalid  SKU supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Product not found"
+          schema:
+            $ref: "#/definitions/ApiResponse"
     put:
       tags:
       - "Product"
@@ -183,10 +191,12 @@ paths:
             $ref: "#/definitions/ApiResponse"
         400:
           description: "Invalid ID supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Product not found"
-        405:
-          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/ApiResponse"
     delete:
       tags:
       - "Product"
@@ -209,8 +219,12 @@ paths:
             $ref: "#/definitions/ApiResponse"
         400:
           description: "Invalid SKU supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Product not found"
+          schema:
+            $ref: "#/definitions/ApiResponse"
 
   /product/uploadImage/{id}:
     post:
@@ -240,6 +254,15 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/ApiResponse"
+        400:
+          description: "Invalid Input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        404:
+          description: "Product not found"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        
       
   /product/findByName:
     get:
@@ -260,9 +283,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid Name value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/findByCategory:
     get:
       tags:
@@ -282,9 +307,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid category value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/findByState:
     get:
       tags:
@@ -307,9 +334,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid State value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/findByBrand:
     get:
       tags:
@@ -329,9 +358,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid State value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/findByColour:
     get:
       tags:
@@ -351,9 +382,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid Colour value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /product/findBySize:
     get:
       tags:
@@ -377,9 +410,11 @@ paths:
         200:
           description: "successful operation"
           schema:
-              $ref: "#/definitions/ApiResponse"
+              $ref: "#/definitions/ProdDictResp"
         400:
           description: "Invalid Size value"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /category:
     post:
         tags:
@@ -401,8 +436,10 @@ paths:
             description: "Successfully added"
             schema:
               $ref: "#/definitions/ApiResponse"
-          405:
+          400:
             description: "Invalid input"
+            schema:
+              $ref: "#/definitions/ApiResponse"
     put:
       tags:
       - "Category"
@@ -426,10 +463,12 @@ paths:
             $ref: "#/definitions/ApiResponse"
         400:
           description: "Invalid ID supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Category not found"
-        405:
-          description: "Validation exception"
+          schema:
+            $ref: "#/definitions/ApiResponse"
   /category/{id}:
     get:
       tags:
@@ -450,11 +489,15 @@ paths:
         200:
           description: "successful operation"
           schema:
-            $ref: "#/definitions/ApiResponse"
+            $ref: "#/definitions/Category"
         400:
           description: "Invalid  SKU supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Category not found"  
+          schema:
+            $ref: "#/definitions/ApiResponse"
     delete:
       tags:
       - "Category"
@@ -477,8 +520,12 @@ paths:
             $ref: "#/definitions/ApiResponse"
         400:
           description: "Invalid SKU supplied"
+          schema:
+            $ref: "#/definitions/ApiResponse"
         404:
           description: "Category not found"
+          schema:
+            $ref: "#/definitions/ApiResponse"
 
 definitions:
   Category:
@@ -566,5 +613,9 @@ definitions:
     properties:
       message:
         type: "string"
+  ProdDictResp:
+      type: object
+      additionalProperties:
+        $ref: '#/definitions/Product'
 
 

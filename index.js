@@ -68,7 +68,7 @@ var categories={
         'name':'Electronics',
         'tax':0.20
     },
-    '1':{
+    '3':{
         'name':'Clothing',
         'tax':0.15
     }
@@ -94,7 +94,7 @@ app.post('/product',(req,res)=>{
     }
     const result = joi.validate(req.body, schema)
     if(result.error) {
-        res.status(405).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
     } else {
         if (result.value.id in product) {
             res.status(403).send({"message": "Product Id already in use"});
@@ -141,13 +141,13 @@ app.put('/product',(req,res)=>{
     }
     const result = joi.validate(req.body, schema)
     if(result.error) {
-        res.status(405).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
     } else {
         if (!(result.value.id in product)) {
-            res.status(405).send({"message": "Product Id Does not exist"});
+            res.status(400).send({"message": "Product Id Does not exist"});
         }
         else if(result.value.category && !(result.value.category in categories)){
-            res.status(405).send({"message": "The category is does not exist"})
+            res.status(400).send({"message": "The category is does not exist"})
         }
         else{
             if(result.value.name)
@@ -319,13 +319,13 @@ app.put('/product/:id',(req,res)=>{
     }
     const result = joi.validate(req.body, schema)
     if(result.error) {
-        res.status(405).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
     } else {
         if (!(id in product)) {
-            res.status(405).send({"message": "Product Id Does not exist"});
+            res.status(400).send({"message": "Product Id Does not exist"});
         }
         else if(result.value.category && !(result.value.category in categories)){
-            res.status(405).send({"message": "This Category Does not exist"});
+            res.status(400).send({"message": "This Category Does not exist"});
         }
         else{
             if(result.value.name)
@@ -371,11 +371,11 @@ app.post('/category',(req,res)=>{
     const schema = {
         id: joi.number().required(),
         name: joi.string().min(4).required(),
-        tax: joi.number().required(),
+        tax: joi.number().min(0).max(1).required()
     }
     const result = joi.validate(req.body, schema)
     if(result.error) {
-        res.status(405).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
     } else {
         if (result.value.id in categories) {
             res.status(403).send({"message": "Category Id already in use"});
@@ -396,14 +396,14 @@ app.put('/category',(req,res)=>{
     const schema = {
         id: joi.number().required(),
         name: joi.string().min(4).required(),
-        tax: joi.number().required(),
+        tax: joi.number().min(0).max(1).required()
     }
     const result = joi.validate(req.body, schema)
     if(result.error) {
-        res.status(405).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
     } else {
         if (!(result.value.id in categories)) {
-            res.status(405).send({"message": "Category Id Does not exist"});
+            res.status(400).send({"message": "Category Id Does not exist"});
         }
         else{
             if(result.value.name)
@@ -470,7 +470,7 @@ app.post('/product/uploadImage/:id', upload.single('file-to-upload'), (req, res)
             files[filename]=id
             res.status(200).send({"message": "Uploaded Successfully",files});
         } else {
-            res.status(405).send({"message": "Upload failed"});
+            res.status(400).send({"message": "Upload failed"});
         }
     }
     else{
